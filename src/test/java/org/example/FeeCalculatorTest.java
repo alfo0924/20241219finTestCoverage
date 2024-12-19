@@ -154,4 +154,42 @@ public class FeeCalculatorTest {
         // 應該選擇最高的折扣200
         assertEquals(300, calculator.calculateFee(3, 4, 15, 101, "repo"));
     }
+
+
+
+    // 新增 WPM 邊界值測試
+    @Test
+    void testWPMDiscountExactBoundaries() {
+        when(gitHubService.getLines(anyString())).thenReturn(0);
+        when(gitHubService.getWMC(anyString())).thenReturn(0);
+
+        // 測試 WPM 剛好等於邊界值
+        assertEquals(500, calculator.calculateFee(2, 10, 0, 60, "")); // 不到邊界
+        assertEquals(450, calculator.calculateFee(2, 10, 0, 80, "")); // 第一個邊界
+        assertEquals(400, calculator.calculateFee(2, 10, 0, 100, "")); // 第二個邊界
+    }
+
+    // 新增打字時間邊界值測試
+    @Test
+    void testTypingMinutesExactBoundaries() {
+        when(gitHubService.getLines(anyString())).thenReturn(0);
+        when(gitHubService.getWMC(anyString())).thenReturn(0);
+
+        // 測試各年級打字時間剛好等於邊界值
+        assertEquals(500, calculator.calculateFee(2, 10, 4, 0, "")); // 二年級低於邊界
+        assertEquals(500, calculator.calculateFee(3, 10, 9, 0, "")); // 三年級低於邊界
+        assertEquals(500, calculator.calculateFee(4, 10, 14, 0, "")); // 四年級低於邊界
+    }
+
+    // 新增程式碼行數邊界值測試
+    @Test
+    void testProgrammingLinesExactBoundaries() {
+        when(gitHubService.getLines(anyString())).thenReturn(999);
+        when(gitHubService.getWMC(anyString())).thenReturn(51);
+
+        // 測試程式碼行數剛好低於折扣門檻
+        assertEquals(500, calculator.calculateFee(2, 10, 0, 0, "repo"));
+    }
+
+
 }
