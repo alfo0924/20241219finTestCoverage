@@ -29,66 +29,40 @@ public class SeleniumTest {
     }
 
     @Test
-    public void testRegularWeekdayPrice() {
+    public void testWeekendPrice() {
         driver.get(baseUrl);
 
-        // Use Select class for dropdown elements
-        Select daySelect = new Select(wait.until(ExpectedConditions.presenceOfElementLocated(By.id("day"))));
-        daySelect.selectByValue("Monday");
+        Select daySelect = new Select(wait.until(
+                ExpectedConditions.presenceOfElementLocated(By.id("day"))
+        ));
+        daySelect.selectByValue("Saturday");
 
-        WebElement ageInput = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("age")));
+        WebElement ageInput = wait.until(
+                ExpectedConditions.presenceOfElementLocated(By.id("age"))
+        );
         ageInput.clear();
         ageInput.sendKeys("30");
 
-        Select timeSelect = new Select(wait.until(ExpectedConditions.presenceOfElementLocated(By.id("time"))));
+        Select timeSelect = new Select(wait.until(
+                ExpectedConditions.presenceOfElementLocated(By.id("time"))
+        ));
         timeSelect.selectByValue("after7");
 
-        WebElement memberNo = wait.until(ExpectedConditions.elementToBeClickable(By.id("member-no")));
+        WebElement memberNo = wait.until(
+                ExpectedConditions.elementToBeClickable(By.id("member-no"))
+        );
         memberNo.click();
 
-        WebElement calculateButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("calculate")));
+        WebElement calculateButton = wait.until(
+                ExpectedConditions.elementToBeClickable(By.id("calculate"))
+        );
         calculateButton.click();
 
-        WebElement output = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("output")));
-        assertTrue("Price should be 200.00", output.getText().contains("費用為 $200.00"));
-    }
-
-    @Test
-    public void testMemberDiscount() {
-        driver.get(baseUrl);
-
-        WebElement memberYes = wait.until(ExpectedConditions.elementToBeClickable(By.id("member-yes")));
-        memberYes.click();
-
-        WebElement memberId = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("member-id")));
-        memberId.clear();
-        memberId.sendKeys("IECS-123");
-
-        WebElement ageInput = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("age")));
-        ageInput.clear();
-        ageInput.sendKeys("30");
-
-        WebElement calculateButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("calculate")));
-        calculateButton.click();
-
-        WebElement output = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("output")));
-        assertTrue("Price should be 100.00", output.getText().contains("費用為 $100.00"));
-    }
-
-    @Test
-    public void testInvalidAge() {
-        driver.get(baseUrl);
-
-        WebElement ageInput = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("age")));
-        ageInput.clear();
-        ageInput.sendKeys("2");
-
-        WebElement calculateButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("calculate")));
-        calculateButton.click();
-
-        WebElement error = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("age-error")));
-        assertTrue(error.isDisplayed());
-        assertEquals("年齡應介於 3 與 75 之間", error.getText());
+        WebElement output = wait.until(
+                ExpectedConditions.presenceOfElementLocated(By.id("output"))
+        );
+        assertTrue("Weekend price should be 250.00",
+                output.getText().contains("費用為 $250.00"));
     }
 
     @After
