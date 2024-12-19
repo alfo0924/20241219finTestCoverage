@@ -16,8 +16,7 @@ public class FeeCalculator {
         int maxDiscount = 0;
 
         // 計算曠課折扣
-        int absenceDiscount = (absenceCount < 5) ? 50 : 0;
-        maxDiscount = Math.max(maxDiscount, absenceDiscount);
+        maxDiscount = (absenceCount < 5) ? 50 : 0;
 
         // 計算打字速度折扣
         int wpmDiscount = 0;
@@ -49,7 +48,7 @@ public class FeeCalculator {
 
         if (grade == 2) {
             programDiscount = Math.min((lines / 1000) * 50, 200);
-        } else if (grade > 2 && wmc > 50) {
+        } else if (wmc > 50) {
             programDiscount = Math.min((lines / 1000) * 50, 200);
         }
         maxDiscount = Math.max(maxDiscount, programDiscount);
